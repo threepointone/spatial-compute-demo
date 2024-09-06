@@ -7,6 +7,7 @@ import preludeHTML from "./prelude.html";
 import App from "../app";
 // @ts-expect-error no types
 import { PassThrough, Stream } from "node:stream";
+import cookie from "cookie";
 
 function assert(condition: unknown, message?: string): asserts condition {
   if (!condition) {
@@ -17,7 +18,8 @@ function assert(condition: unknown, message?: string): asserts condition {
 type Env = {
   POKEMON: Service;
   Session: DurableObjectNamespace<Session>;
-  LIMITER: RateLimit;
+  // LIMITER: RateLimit;
+  DB: D1Database;
 };
 
 // Function to convert a Node.js pipeable stream into a Web ReadableStream
@@ -56,8 +58,10 @@ function toWebReadableStream(pipeableStream: Stream) {
 
 export class Session extends Server<Env> {
   async onRequest(request: Request) {
+    const url = new URL(request.url);
+    const smart = url.searchParams.get("smart") !== "false";
     const resumed = await resumeToPipeableStream(
-      <App POKEMON={this.env.POKEMON} />,
+      <App POKEMON={this.env.POKEMON} DB={this.env.DB} smart={smart} />,
       JSON.parse(JSON.stringify(postponed))
     );
 
@@ -71,8 +75,6 @@ export class Session extends Server<Env> {
   }
 }
 
-const SESSION_ID = "my-session-id";
-
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext) {
     // const { success } = await env.LIMITER.limit({ key: SESSION_ID });
@@ -81,7 +83,14 @@ export default {
     //   return new Response("Rate limit exceeded", { status: 429 });
     // }
 
-    const stub = await getServerByName(env.Session, SESSION_ID);
+    const cookies = cookie.parse(request.headers.get("cookie") || "");
+    let sessionId = cookies.sessionId;
+
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+    }
+
+    const stub = await getServerByName(env.Session, sessionId);
     const restOfResponse = await stub.fetch(request);
 
     // we want to start a new reponse that first writes the prelude HTML,
@@ -108,6 +117,9 @@ export default {
           "Content-Type": "text/html",
           "content-encoding": "identity",
           "Transfer-Encoding": "chunked",
+          "Set-Cookie": cookie.serialize("sessionId", sessionId, {
+            httpOnly: true,
+          }),
         },
       }
     );

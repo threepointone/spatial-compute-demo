@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "data": "wrangler dev -c ./wrangler.data.toml",
-    "start": "wrangler dev"
+    "start": "wrangler dev",
+    "prerender": "bun src/prerender/index.tsx"
   },
   "keywords": [],
   "author": "",
@@ -12,13 +13,15 @@
   "description": "",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240903.0",
+    "@types/cookie": "^0.6.0",
     "@types/react": "npm:types-react@rc",
     "@types/react-dom": "npm:types-react-dom@rc",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
-    "wrangler": "^3.74.0"
+    "wrangler": "^3.75.0"
   },
   "dependencies": {
+    "cookie": "^0.6.0",
     "partyserver": "^0.0.52",
     "partysocket": "^1.0.2",
     "react": "0.0.0-experimental-d1afcb43-20240903",

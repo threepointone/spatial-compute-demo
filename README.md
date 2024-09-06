@@ -19,14 +19,14 @@ Read the blog post for more details, but to set some context:
 - Code for the Server is under `./src/server`
 - Code for the Data Fetching is under `./src/data`
 - (In the future, the Data Fetching and Server will be combined into a single worker)
-- We have a prerender script under `./src/prerender` that's run during build time to generate the app "shell" / skeleton that's sent to the client.
+- We have a prerender script under `./src/prerender` that's run during build time to generate the app "shell" / skeleton that's first sent to the client.
 - The whole app is plain React SSR, with no client side hydration (yet).
 
 **Here's the timeline of what happens when you visit the site:**
 
 - A response stream is started from the eyeball worker
 - It _immediately_ streams a prerendered html app "shell"
-- Reads a session id from the cokkie header (or creates a new one if not present)
+- Reads a session id from the cookie header (or creates a new one if not present)
 - The request is passed on to the session server / durable object
 - React kicks in and starts rendering
 - It starts fetching data, on a binding to a smart placed worker
@@ -42,9 +42,7 @@ Read the blog post for more details, but to set some context:
 - Content streams into the page as it's ready without layout shift / jank
 - The whole thing happens in ONE request (check the html!)
 
-
 https://github.com/user-attachments/assets/f2c6dee0-5588-40d3-8e8f-a973280788aa
-
 
 **As a developer:**
 
@@ -63,10 +61,11 @@ https://github.com/user-attachments/assets/f2c6dee0-5588-40d3-8e8f-a973280788aa
 ## TODO
 
 - [x] - remove the rate limiter, it's not useful for this demo
+- [x] - make duplicate sql calls from the data fetching worker
+- [x] - add a query param to the url to toggle between smart placed / edge based data fetching
+- [~] - add some illustrations to this readme
+- [ ] - use session data in some way (update a view counter?)
 - [ ] - setup a session id if not already, otherwise read from cookie header
-- [ ] - make duplicate sql calls from the data fetching worker
-- [ ] - add a query param to the url to toggle between smart placed / edge based data fetching
 - [ ] - automatically detect i/o while prerendering (or just default to first suspense boundary)
-- [ ] - add some illustrations to this readme
 - [ ] - add client side hydration / interactivity to the app
-- [ ] - show locations of data and session servers on the demo page
+- [ ] - show locations of data and session servers on the demo page (https://www.cloudflare.com/cdn-cgi/trace)
