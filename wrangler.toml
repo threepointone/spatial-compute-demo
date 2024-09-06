@@ -1,0 +1,30 @@
+# our main "server" worker
+
+name = 'spatial-compute'
+main = 'src/server/index.tsx'
+compatibility_date = '2024-08-30'
+compatibility_flags = ["nodejs_compat_v2"]
+
+legacy_assets = './public'
+
+[build]
+command = "tailwindcss -i ./src/client/styles.css -o ./public/dist/styles.css && esbuild src/client/index.tsx --bundle --outdir=./public/dist"
+
+[[services]]
+service = "pokemon-fetch"
+binding = "POKEMON"
+
+[[durable_objects.bindings]]
+name = "Session"
+class_name = "Session"
+
+ [[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["Session"]
+
+
+[[unsafe.bindings]]
+name = "LIMITER"
+type = "ratelimit"
+namespace_id = "3141"
+simple = { limit = 20, period = 10 }

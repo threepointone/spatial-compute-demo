@@ -1,0 +1,14 @@
+### the "smart"ly placed pokemon-fetch worker
+name = 'pokemon-fetch'
+main = './src/data/index.ts'
+compatibility_date = '2024-08-30'
+
+[placement]
+mode = "smart"
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "pokemon"
+database_id = "1bea6938-8777-4864-a72e-f5fa2179411f"
+
+# when we have smart placement for WorkerEntryPoints, we can move this to the server worker

@@ -1,0 +1,80 @@
+{
+  "nextSegmentId": 1,
+  "rootFormatContext": {
+    "insertionMode": 0,
+    "selectedValue": null,
+    "tagScope": 0
+  },
+  "progressiveChunkSize": 12800,
+  "resumableState": {
+    "idPrefix": "",
+    "nextFormID": 0,
+    "streamingFormat": 0,
+    "instructions": 0,
+    "hasBody": true,
+    "hasHtml": true,
+    "unknownResources": {},
+    "dnsResources": {},
+    "connectResources": {
+      "default": {},
+      "anonymous": {},
+      "credentials": {}
+    },
+    "imageResources": {},
+    "styleResources": {},
+    "scriptResources": {},
+    "moduleUnknownResources": {},
+    "moduleScriptResources": {}
+  },
+  "replayNodes": [
+    [
+      "App",
+      0,
+      [
+        [
+          "RootLayout",
+          0,
+          [
+            [
+              "html",
+              0,
+              [
+                [
+                  "body",
+                  1,
+                  [
+                    [
+                      "main",
+                      0,
+                      [
+                        [
+                          "Suspense",
+                          3,
+                          [],
+                          0,
+                          [
+                            "Suspense Fallback",
+                            3,
+                            [],
+                            null
+                          ],
+                          0
+                        ]
+                      ],
+                      null
+                    ]
+                  ],
+                  null
+                ]
+              ],
+              null
+            ]
+          ],
+          null
+        ]
+      ],
+      null
+    ]
+  ],
+  "replaySlots": null
+}
