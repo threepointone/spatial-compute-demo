@@ -65,7 +65,7 @@ https://github.com/user-attachments/assets/f2c6dee0-5588-40d3-8e8f-a973280788aa
 - [x] - remove the rate limiter, it's not useful for this demo
 - [x] - make duplicate sql calls from the data fetching worker
 - [x] - add a query param to the url to toggle between smart placed / edge based data fetching
-- [~] - add some illustrations to this readme
+- [x] - add some illustrations to this readme
 - [x] - setup a session id if not already, otherwise read from cookie header
 - [ ] - use session data in some way (update a view counter?)
 - [ ] - automatically detect i/o while prerendering (or just default to first suspense boundary)
