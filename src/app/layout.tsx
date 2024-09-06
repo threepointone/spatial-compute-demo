@@ -52,7 +52,7 @@ export default function RootLayout({
             <a
               className="underline"
               target="_blank"
-              href="https://github.com/rauchg/how-is-this-not-illegal"
+              href="https://github.com/threepointone/spatial-compute-demo/"
             >
               Source
             </a>

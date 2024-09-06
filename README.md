@@ -1,5 +1,7 @@
 # spatial compute, but for real
 
+Demo link: https://spatial-compute.threepointone.workers.dev/
+
 _(WIP, pulling technology from the future isn't instantaneous)_
 
 This is a demo of the spatial compute model, [as detailed here](https://sunilpai.dev/posts/spatial-compute/).
