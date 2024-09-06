@@ -64,8 +64,8 @@ https://github.com/user-attachments/assets/f2c6dee0-5588-40d3-8e8f-a973280788aa
 - [x] - make duplicate sql calls from the data fetching worker
 - [x] - add a query param to the url to toggle between smart placed / edge based data fetching
 - [~] - add some illustrations to this readme
+- [x] - setup a session id if not already, otherwise read from cookie header
 - [ ] - use session data in some way (update a view counter?)
-- [ ] - setup a session id if not already, otherwise read from cookie header
 - [ ] - automatically detect i/o while prerendering (or just default to first suspense boundary)
 - [ ] - add client side hydration / interactivity to the app
 - [ ] - show locations of data and session servers on the demo page (https://www.cloudflare.com/cdn-cgi/trace)
