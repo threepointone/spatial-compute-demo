@@ -42,6 +42,10 @@ Read the blog post for more details, but to set some context:
 - Content streams into the page as it's ready without layout shift / jank
 - The whole thing happens in ONE request (check the html!)
 
+
+https://github.com/user-attachments/assets/f2c6dee0-5588-40d3-8e8f-a973280788aa
+
+
 **As a developer:**
 
 - You write a React app as you please (This demo isn't nextjs or remix or rsc or whatever. it's just React)
