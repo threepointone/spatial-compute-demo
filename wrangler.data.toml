@@ -11,4 +11,7 @@ binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "pokemon"
 database_id = "1bea6938-8777-4864-a72e-f5fa2179411f"
 
-# when we have smart placement for WorkerEntryPoints, we can move this to the server worker
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "spatial-compute-demo"

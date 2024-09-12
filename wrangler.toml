@@ -28,6 +28,11 @@ class_name = "Session"
 tag = "v1" # Should be unique for each entry
 new_classes = ["Session"]
 
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "spatial-compute-demo"
+
+
 
 # [[unsafe.bindings]]
 # name = "LIMITER"

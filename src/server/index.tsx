@@ -8,6 +8,8 @@ import App from "../app";
 // @ts-expect-error no types
 import { PassThrough, Stream } from "node:stream";
 import cookie from "cookie";
+import getLocation from "./getLocation";
+import { nanoid } from "nanoid";
 
 function assert(condition: unknown, message?: string): asserts condition {
   if (!condition) {
@@ -20,6 +22,7 @@ type Env = {
   Session: DurableObjectNamespace<Session>;
   // LIMITER: RateLimit;
   DB: D1Database;
+  ANALYTICS: AnalyticsEngineDataset;
 };
 
 // Function to convert a Node.js pipeable stream into a Web ReadableStream
@@ -60,8 +63,19 @@ export class Session extends Server<Env> {
   async onRequest(request: Request) {
     const url = new URL(request.url);
     const smart = url.searchParams.get("smart") !== "false";
+    const locations = {
+      eyeball: JSON.parse(request.headers.get("x-eyeball-location")!),
+      session: await getLocation(),
+    };
     const resumed = await resumeToPipeableStream(
-      <App POKEMON={this.env.POKEMON} DB={this.env.DB} smart={smart} />,
+      <App
+        POKEMON={this.env.POKEMON}
+        DB={this.env.DB}
+        smart={smart}
+        locations={locations}
+        ANALYTICS={this.env.ANALYTICS}
+        sessionId={this.name}
+      />,
       JSON.parse(JSON.stringify(postponed))
     );
 
@@ -70,6 +84,9 @@ export class Session extends Server<Env> {
         "Content-Type": "text/html",
         "content-encoding": "identity",
         "Transfer-Encoding": "chunked",
+        // set caching header so it never caches
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
       },
     });
   }
@@ -83,15 +100,28 @@ export default {
     //   return new Response("Rate limit exceeded", { status: 429 });
     // }
 
-    const cookies = cookie.parse(request.headers.get("cookie") || "");
-    let sessionId = cookies.sessionId;
+    const url = new URL(request.url);
+    let sessionId = url.searchParams.get("session");
 
     if (!sessionId) {
-      sessionId = crypto.randomUUID();
+      const cookies = cookie.parse(request.headers.get("cookie") || "");
+      sessionId = cookies.sessionId;
+    }
+
+    if (!sessionId || sessionId.length > 8) {
+      sessionId = nanoid(8);
     }
 
     const stub = await getServerByName(env.Session, sessionId);
-    const restOfResponse = await stub.fetch(request);
+
+    const doRequest = new Request(request);
+
+    doRequest.headers.set(
+      "x-eyeball-location",
+      JSON.stringify(await getLocation())
+    );
+
+    const restOfResponse = await stub.fetch(doRequest);
 
     // we want to start a new reponse that first writes the prelude HTML,
     // then streams restOfResponse
@@ -120,6 +150,9 @@ export default {
           "Set-Cookie": cookie.serialize("sessionId", sessionId, {
             httpOnly: true,
           }),
+          // set caching header so it never caches
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
         },
       }
     );
