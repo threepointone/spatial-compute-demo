@@ -26,6 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <meta charSet="UTF-8" />
       {/* todo: add inter font */}
       <link rel="stylesheet" href="/dist/styles.css" />
       <body>

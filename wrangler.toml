@@ -5,7 +5,7 @@ main = 'src/server/index.tsx'
 compatibility_date = '2024-08-30'
 compatibility_flags = ["nodejs_compat_v2"]
 
-legacy_assets = './public'
+experimental_assets = { directory = "./public" }
 
 # [build]
 # command = "tailwindcss -i ./src/client/styles.css -o ./public/dist/styles.css"

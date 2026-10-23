@@ -53,7 +53,7 @@ function toWebReadableStream(pipeableStream: Stream) {
     },
     cancel() {
       // Abort the Node.js stream when the web ReadableStream is canceled
-      pipeableStream.abort();
+      pipeableStream.destroy();
       passthrough.destroy();
     },
   });
@@ -81,7 +81,7 @@ export class Session extends Server<Env> {
 
     return new Response(toWebReadableStream(resumed), {
       headers: {
-        "Content-Type": "text/html",
+        "Content-Type": "text/html; charset=utf-8",
         "content-encoding": "identity",
         "Transfer-Encoding": "chunked",
         // set caching header so it never caches
